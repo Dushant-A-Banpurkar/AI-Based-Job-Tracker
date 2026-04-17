@@ -4,7 +4,6 @@ import * as dotenv from "dotenv";
 import Analysis from "../models/analysisModel.js";
 dotenv.config();
 
-
 export const createAnalysis = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -12,11 +11,17 @@ export const createAnalysis = async (req, res) => {
     if (!userResumeData) {
       return res.status(404).json({ error: "Resume data not found" });
     }
-    const { jobDescription, pdfTextData } = userResumeData;
+    const { companyName, role, jobDescription, pdfTextData } = userResumeData;
 
     const prompt = `
       Act as an expert ATS (Application Tracking System) and Resume Coach.
       Analyze the following resume against the job description.
+
+      Company Name:
+      ${companyName}
+
+      Role:
+      ${role}
 
       Job Description:
       ${jobDescription}
@@ -25,7 +30,9 @@ export const createAnalysis = async (req, res) => {
       ${pdfTextData}
 
       Return a JSON object strictly following this structure. Do not return markdown or explanations, only the JSON:
-      {
+      { 
+        "comanyName:(name of Company),
+        "role":(role or position),
         "score": (number 0-100, overall match),
         "atsScore": (number 0-100, technical parsing capability),
         "keywords": ["List", "of", "important", "keywords", "found"], 
@@ -50,12 +57,14 @@ export const createAnalysis = async (req, res) => {
       response_format: { type: "json_object" },
     });
     const analysisResult = JSON.parse(
-      chatCompletion.choices[0].message.content
+      chatCompletion.choices[0].message.content,
     );
     const savedAnalysis = await Analysis.findOneAndUpdate(
       { userId: userId },
       {
         userId: userId,
+        companyName: analysisResult.companyName,
+        role: analysisResult.role,
         score: analysisResult.score,
         atsScore: analysisResult.atsScore,
         keywords: analysisResult.keywords,
@@ -68,9 +77,9 @@ export const createAnalysis = async (req, res) => {
       {
         new: true,
         upsert: true,
-      }
+      },
     );
-    console.log("analysis Result: ", savedAnalysis);
+    // console.log("analysis Result: ", savedAnalysis);
     res.status(200).json({ Message: "Analysis complete", data: savedAnalysis });
   } catch (error) {
     console.error("Error in analysis", error);
@@ -84,9 +93,11 @@ export const getAnalysis = async (req, res) => {
   try {
     const { userId } = req.params;
     const userData = await Analysis.findById(userId);
-    res.status(200).json({message:"Get Analysis Result",data:{userData}})
+    res
+      .status(200)
+      .json({ message: "Get Analysis Result", data: { userData } });
   } catch (error) {
-    console.log("Error: ",error);
-    res.status(500).json({error:"Server error",details:error.message})
+    console.log("Error: ", error);
+    res.status(500).json({ error: "Server error", details: error.message });
   }
 };

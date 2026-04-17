@@ -1,10 +1,5 @@
-import path from "path";
 import { extractTextFromArrayBuffer } from "../helper/pdfDataExtractor.js";
-import fs from "fs";
 import resumeData from "../models/resumeModel.js";
-import s3 from "../services/s3Client.js";
-import { PutObjectAclCommand } from "@aws-sdk/client-s3";
-import env from "../config/env.js";
 
 // export const uploadsingleFile = async (req, res) => {
 //   try {
@@ -78,9 +73,11 @@ export const uploadsingleFile = async (req, res) => {
     if (!textData) {
       console.log("error in textData");
     }
-    const { jobDescription, userId } = req.body;
-    console.log(userId);
+    const { companyName,role,jobDescription, userId } = req.body;
+    // console.log(userId);
     const newData = {
+      companyName,
+      role,
       jobDescription,
       pdfTextData: textData,
       userId,
@@ -90,7 +87,7 @@ export const uploadsingleFile = async (req, res) => {
       { $set: newData },
       { new: true, upsert: true, runValidators: true }
     );
-    res.status(200).json({ message: `User jd and pdf data: ${updateNewData}` });
+    res.status(200).json({ Message: `User jd and pdf data: ${updateNewData}` });
   } catch (error) {
     console.log("uploadSinglefile", error);
     res

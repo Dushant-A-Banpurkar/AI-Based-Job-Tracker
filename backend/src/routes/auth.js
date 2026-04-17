@@ -8,6 +8,6 @@ const router=exprees.Router();
 
 router.post("/signup",validateBody(userValidator),signup);
 router.post("/signin",signin);
-router.get("/getuser/:userId",getuserid);
-router.post("/logout",protectRoutes,logout);
+router.get("/me",protectRoutes,getuserid);
+router.post("/logout",logout);
 export default router;

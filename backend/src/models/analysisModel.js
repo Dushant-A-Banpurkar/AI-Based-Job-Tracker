@@ -6,6 +6,8 @@ const analysisSchema = new mongoose.Schema({
     ref: "UserData",
     required: true,
   },
+  companyName:{type:String,required:true},
+  role:{type:String,required:true},
   score: { type: Number, required: true },
   atsScore: { type: Number, required: true },
   keywords: [{ type: String }],

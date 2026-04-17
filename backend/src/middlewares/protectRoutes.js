@@ -17,7 +17,9 @@ export const protectRoutes = async (req, res, next) => {
         .status(401)
         .json({ error: "Unauthorized: Invalid tokens provided" });
     }
-    const sessionToken = await redis.get(`session ${decoded.userId}`);
+    const redisKey=`session:${decoded.userId}`;
+    console.log(`🔍 Checking Redis key:${redisKey}`)
+    const sessionToken = await redis.get(redisKey);
     console.log("🔍 Redis found token:", sessionToken ? "YES" : "NO");
     console.log("🔍 Tokens match?", sessionToken === token);
     if (!sessionToken || sessionToken !== token) {

@@ -7,6 +7,15 @@ const resumeSchema = new mongoose.Schema(
       ref:"Users",
       required: true,
     },
+    companyName:{
+      type:String,
+      trim:true,
+      maxLength:100,
+    },
+    role:{
+      type:String,
+      trim:true,
+    },
     jobDescription: {
       type: String,
       trim: true,

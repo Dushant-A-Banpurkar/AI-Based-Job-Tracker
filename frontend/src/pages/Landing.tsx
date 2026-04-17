@@ -1,5 +1,7 @@
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import { useAuthUser } from "@/hooks/useAuthUser";
 
 import {
   ArrowRight,
@@ -11,7 +13,8 @@ import {
   Upload,
   Zap,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const steps = [
   {
@@ -49,14 +52,40 @@ const features = [
   },
 ];
 const Landing = () => {
+  const { data: user, isLoading } = useAuthUser();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user && !isLoading) {
+      navigate("/login");
+    }
+  }, [navigate, user, isLoading]);
 
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center ">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" disabled size="sm">
+            <Spinner
+              data-icon="inline-start"
+              className="mr-2 h-5 w-5 animate-spin"
+            />
+            Welcome to AI-Powered Job Tracker
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
   return (
     <div className="md:min-h-screen w-auto">
       <Navbar />
       <section className="md:relative overflow-hidden md:p-32 py-16 border-b border-b-stone-400 mx-auto">
         <div className="flex flex-col items-center gap-8 md:gap-10 mt-16">
           <div className="border border-blue-800 text-blue-800 w-auto md:w-fit flex flex-row  gap-4 px-4 py-1 rounded-2xl">
-            <Sparkle height={24} width={24}/>
+            <Sparkle height={24} width={24} />
             <span>AI-Powered Resume Optimization</span>
           </div>
           <div className="flex flex-col gap-5 items-center text-center p-6">
@@ -69,10 +98,21 @@ const Landing = () => {
             </p>
           </div>
           <div className="flex flex-row gap-5 items-center text-center">
-            <Button variant="destructive" className="bg-blue-800">
-              Get Started Free <ArrowRight className="ml-2 h-5 w-5" />
+            <Button variant="destructive" className="bg-blue-800 flex flex-row">
+              <Link to="/analysis">
+                Get Started Free 
+              </Link>
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button variant="outline"><Link to="/">Sign In</Link></Button>
+            {!user ? (
+              <>
+                <Button variant="outline">
+                  <Link to="/login">Sign In</Link>
+                </Button>
+              </>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="flex md:flex-row flex-col gap-5 items-center text-center">
             <div className="flex items-center gap-2">
@@ -152,7 +192,10 @@ const Landing = () => {
             ResumeAI.
           </p>
           <div className="flex flex-row gap-5 items-center text-center mt-16">
-            <Button variant="destructive" className="bg-blue-800 px-8 py-6 text-xl hover:bg-transparent hover:border">
+            <Button
+              variant="destructive"
+              className="bg-blue-800 px-8 py-6 text-xl hover:bg-transparent hover:border"
+            >
               Start Free Analysis <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
@@ -160,7 +203,9 @@ const Landing = () => {
       </section>
       <footer className="flex flex-row justify-between py-6 px-24">
         <span className="font-xl text-xl text-white">ResumeAI</span>
-        <p className="text-stone-400">© {new Date().getFullYear()} ResumeAI. All rights reserved.</p>
+        <p className="text-stone-400">
+          © {new Date().getFullYear()} ResumeAI. All rights reserved.
+        </p>
       </footer>
     </div>
   );

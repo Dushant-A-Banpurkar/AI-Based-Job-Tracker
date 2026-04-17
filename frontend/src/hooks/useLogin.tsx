@@ -15,6 +15,7 @@ const sigin = async (data: LoginForm) => {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials:"include",
     body: JSON.stringify(data),
   });
   if (!res.ok) {

@@ -25,7 +25,7 @@ export const useResultData=()=>{
     return useQuery({
         queryKey:["analysis-result",user?._id],
         queryFn:()=>resultData(user?._id as string),
-        enabled:!!user._id,
+        enabled:!!user?._id,
         retry:false,
         staleTime:5*60*1000
     })

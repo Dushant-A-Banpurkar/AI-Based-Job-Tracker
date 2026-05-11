@@ -1,3 +1,4 @@
+import GridBackgroundDemo from "@/components/grid-background-demo";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -80,7 +81,7 @@ const Landing = () => {
     return null;
   }
   return (
-    <div className="md:min-h-screen w-auto">
+    <GridBackgroundDemo>
       <Navbar />
       <section className="md:relative overflow-hidden md:p-32 py-16 border-b border-b-stone-400 mx-auto">
         <div className="flex flex-col items-center gap-8 md:gap-10 mt-16">
@@ -207,7 +208,7 @@ const Landing = () => {
           © {new Date().getFullYear()} ResumeAI. All rights reserved.
         </p>
       </footer>
-    </div>
+    </GridBackgroundDemo>
   );
 };
 

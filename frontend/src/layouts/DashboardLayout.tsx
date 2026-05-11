@@ -1,4 +1,6 @@
-import SideNavbar from "@/components/SideNavbar";
+import GridBackgroundDemo from "@/components/grid-background-demo";
+import SideNavigationbar from "@/components/SideNavigationbar";
+import TopNavBar from "@/components/TopNavBar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuthUser } from "@/hooks/useAuthUser";
@@ -8,38 +10,50 @@ import { Outlet, useNavigate } from "react-router-dom";
 const DashBoardLayout = () => {
   const { data: user, isLoading } = useAuthUser();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!user && !isLoading) {
-        navigate("/");
+      navigate("/");
     }
   }, [navigate, user, isLoading]);
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center ">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" disabled size="sm">
-            <Spinner data-icon="inline-start" className="mr-2 h-5 w-5 animate-spin" />
-            Preparing your dashboard...
-          </Button>
-        </div>
+      <div className="flex h-screen w-full items-center justify-center bg-zinc-950">
+        <Button variant="outline" disabled className="border-blue-600 text-white">
+          <Spinner className="mr-2 h-4 w-4 animate-spin" />
+          Preparing your dashboard...
+        </Button>
       </div>
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   return (
-    <div className="min-h-screen">
-      <div className="hidden md:block">
-        <SideNavbar />
+    <GridBackgroundDemo>
+      {/* IMPORTANT: We add a flex container here. 
+          The Sidebar is fixed/sticky, and the main area scrolls.
+      */}
+      <div className="flex min-h-screen w-full">
+        
+        {/* Sidebar - Desktop Only */}
+        <div className="hidden md:block fixed">
+          <SideNavigationbar />
+        </div>
+
+        {/* Main Content Area */}
+        {/* ml-[220px] matches your sidebar width exactly. 
+            flex-1 makes it take up the remaining screen width.
+        */}
+        <main className="flex-1 ml-55 md:pb-0">
+          <TopNavBar/>
+          <div className="container mx-auto py-6 w-full">
+             <Outlet />
+          </div>
+        </main>
       </div>
-      <main className="pb-20 md:ml-64 md:pb-0">
-        <Outlet />
-      </main>
-    </div>
+    </GridBackgroundDemo>
   );
 };
 

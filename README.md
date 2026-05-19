@@ -163,7 +163,10 @@ Add your project screenshots here.
 Example:
 
 ```md
-![Dashboard Screenshot](./screenshots/dashboard.png)
+<img width="1912" height="923" alt="image" src="https://github.com/user-attachments/assets/c9370ce7-9fd9-4355-b8c0-a5c8f89126f9" />
+<img width="1887" height="931" alt="image" src="https://github.com/user-attachments/assets/87656f96-e3b9-4fcf-9cc2-64ceed1e07e7" />
+<img width="1913" height="918" alt="image" src="https://github.com/user-attachments/assets/ac71e7d4-14be-43ad-b186-242e82c65880" />
+
 ```
 
 ---

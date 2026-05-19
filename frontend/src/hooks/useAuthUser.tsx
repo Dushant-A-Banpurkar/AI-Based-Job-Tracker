@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 const fetchAuthUser = async () => {
   const [response] = await Promise.all([
-    fetch("http://localhost:5000/api/auth/me", {
+    fetch('/api/auth/me', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -24,7 +24,7 @@ const analyze = async (data: analyzeForm) => {
   formData.append("userId", data.userId);
   formData.append("companyName", data.companyName);
   formData.append("role", data.role);
-  const res = await fetch("http://localhost:5000/api/pdf/upload-single", {
+  const res = await fetch("/api/pdf/upload-single", {
     method: "POST",
     credentials: "include",
     body: formData,

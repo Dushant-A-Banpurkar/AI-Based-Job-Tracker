@@ -7,7 +7,7 @@ interface getApplications {
 }
 
 const getApplications = async (data: getApplications) => {
-  const res = await fetch("http://localhost:5000/api/application/get", {
+  const res = await fetch("/api/application/get", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

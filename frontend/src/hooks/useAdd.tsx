@@ -41,7 +41,7 @@ const add = async (data: addApplication) => {
   //     : data.interview_date,
   // );
   // formData.append("notes", data.notes);
-  const res = await fetch("http://localhost:5000/api/application/add", {
+  const res = await fetch("/api/application/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -3,7 +3,7 @@ import { useAuthUser } from "./useAuthUser";
 
 const resultData = async (userId: string) => {
   const res = await fetch(
-    `http://localhost:5000/api/analysis/analyzing/${userId}`,
+    `/api/analysis/analyzing/${userId}`,
     {
       method: "POST",
       headers: {

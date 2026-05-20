@@ -18,7 +18,8 @@ interface signUpForm {
 }
 
 const signup = async (data: signUpForm) => {
-  const res = await fetch("/api/auth/signup", {
+  const url=import.meta.env.VITE_BACKEND_API;
+  const res = await fetch(`${url}/api/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

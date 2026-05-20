@@ -7,7 +7,8 @@ interface getApplications {
 }
 
 const getApplications = async (data: getApplications) => {
-  const res = await fetch("/api/application/get", {
+  const url=import.meta.env.VITE_BACKEND_API;
+  const res = await fetch(`${url}/api/application/get`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

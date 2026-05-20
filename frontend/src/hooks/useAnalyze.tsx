@@ -24,7 +24,9 @@ const analyze = async (data: analyzeForm) => {
   formData.append("userId", data.userId);
   formData.append("companyName", data.companyName);
   formData.append("role", data.role);
-  const res = await fetch("/api/pdf/upload-single", {
+
+  const url=import.meta.env.VITE_BACKEND_API;
+  const res = await fetch(`${url}/api/pdf/upload-single`, {
     method: "POST",
     credentials: "include",
     body: formData,

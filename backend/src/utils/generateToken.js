@@ -26,8 +26,8 @@ export const generateTokenAndSetCookies =async (userId, res) => {
     res.cookie("jwt", token, {
       maxAge: mstonumber(expiresIn),
       httpOnly: true, //prevent XSS attack cross-site scripting attacks
-      sameSite: "strict", // CSRF attacks cross-site request forgery attacks
-      secure: env.node !== "development",
+      sameSite: "none", // CSRF attacks cross-site request forgery attacks
+      secure: true,
     });
   } catch (error) {
     console.error("JWT generation error: ",error.message);

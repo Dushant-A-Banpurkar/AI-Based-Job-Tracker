@@ -2,8 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuthUser } from "./useAuthUser";
 
 const resultData = async (userId: string) => {
+  const url=import.meta.env.VITE_BACKEND_API;
   const res = await fetch(
-    `/api/analysis/analyzing/${userId}`,
+    `${url}/api/analysis/analyzing/${userId}`,
     {
       method: "POST",
       headers: {

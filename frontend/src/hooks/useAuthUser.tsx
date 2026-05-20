@@ -3,8 +3,9 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 
 const fetchAuthUser = async () => {
+  const url=import.meta.env.VITE_BACKEND_API;
   const [response] = await Promise.all([
-    fetch('/api/auth/me', {
+    fetch(`${url}/api/auth/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

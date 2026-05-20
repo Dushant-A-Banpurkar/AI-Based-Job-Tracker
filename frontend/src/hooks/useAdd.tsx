@@ -41,7 +41,9 @@ const add = async (data: addApplication) => {
   //     : data.interview_date,
   // );
   // formData.append("notes", data.notes);
-  const res = await fetch("/api/application/add", {
+
+  const url=import.meta.env.VITE_BACKEND_API;
+  const res = await fetch(`${url}/api/application/add`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

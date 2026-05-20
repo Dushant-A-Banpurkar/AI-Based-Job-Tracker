@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const logoutApi = async () => {
-  const response = await fetch("/api/auth/logout", {
+  const url=import.meta.env.VITE_BACKEND_API;
+  const response = await fetch(`${url}/api/auth/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

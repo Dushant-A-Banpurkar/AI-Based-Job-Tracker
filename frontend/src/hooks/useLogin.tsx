@@ -10,7 +10,8 @@ interface LoginForm {
 }
 
 const sigin = async (data: LoginForm) => {
-  const res = await fetch("/api/auth/signin", {
+    const url=import.meta.env.VITE_BACKEND_API;
+  const res = await fetch(`${url}/api/auth/signin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -55,6 +55,7 @@ export const createAnalysis = async (req, res) => {
       messages: [{ role: "user", content: prompt }],
       temperature: 0.2,
       response_format: { type: "json_object" },
+      stream:true
     });
     const analysisResult = JSON.parse(
       chatCompletion.choices[0].message.content,

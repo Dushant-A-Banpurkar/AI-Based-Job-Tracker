@@ -68,7 +68,7 @@ export const useAnalyze = () => {
       });
       toast.success("Analysis Proccess Completed");
       // add navigation to result page
-      navigate("/result");
+      navigate("/analysis");
     },
   } as UseMutationOptions<string, Error, analyzeForm>);
 

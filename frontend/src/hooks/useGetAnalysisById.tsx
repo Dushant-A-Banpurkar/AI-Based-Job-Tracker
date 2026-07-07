@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-const fetchApplicationById = async (id: string) => {
+const fetchHistoryById = async (id: string) => {
   const url = import.meta.env.VITE_BACKEND_API;
-  const res = await fetch(`${url}/api/application/id/${id}`, {
+  const res = await fetch(`${url}/api/analysis/getanalysis/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -10,17 +10,18 @@ const fetchApplicationById = async (id: string) => {
     credentials: "include",
   });
 
-  if (!res.ok) {
+  if (res.ok) {
     const errorData = await res.json();
-    throw new Error(errorData.error || "Failed to Get Application");
+    console.log(errorData)
+    throw new Error(errorData.error || " Failed to Get Analysis Result");
   }
   return res.json();
 };
 
-export const useGetApplicationByID = (id: string) => {
+export const useGetHistoryById = (id: string) => {
   return useQuery({
-    queryKey: ["application", id],
-    queryFn: () => fetchApplicationById(id),
+    queryKey: ["Analysis-Result", id],
+    queryFn: () => fetchHistoryById(id),
     enabled: !!id,
     retry: false,
     staleTime: 5 * 60 * 1000,

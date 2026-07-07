@@ -68,7 +68,7 @@ export const getJobApplication = async (req, res) => {
     const { userId } = req.body;
     const id = await UserData.findById(userId);
     if (!id) {
-      console.log("Yes Not Found");
+      console.log("UserId not Found");
       return res.status(400).json({ message: "User Not Found!!" });
     }
 
@@ -90,7 +90,7 @@ export const getJobApplicationById = async (req, res) => {
     const { id } = req.params;
     const application = await AddApplicationData.findById(id);
     if (!application)
-      return res.status(404).json({ error: "Application not found" });
+      return res.status(404).json({ error: "Application Not found" });
 
     return res.status(200).json(application);
   } catch (error) {

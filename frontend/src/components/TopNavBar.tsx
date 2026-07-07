@@ -31,7 +31,7 @@ export default function TopNavBar() {
         <span className="hidden text-[11px] text-zinc-400 lg:block">
             {today}
         </span>
-        <Link to="./add" className="h-8 gap-2 rounded-none bg-[#c0392b] px-4 text-[11px] font-bold uppercase tracking-wider text-white hover:bg-[#a93226] flex flex-row items-center">
+        <Link to="./addapplication" className="h-8 gap-2 rounded-none bg-[#c0392b] px-4 text-[11px] font-bold uppercase tracking-wider text-white hover:bg-[#a93226] flex flex-row items-center">
             <Plus className="h-3.5 w-3.5"/>
             New Application
         </Link>

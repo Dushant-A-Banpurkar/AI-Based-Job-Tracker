@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // AnalysisTimelinePage.tsx
-import React, { useMemo } from "react";
+import  { useMemo } from "react";
 import { useGetHistory } from "@/hooks/useGetHistory";
 import { Calendar, ArrowRight, TrendingUp, TrendingDown, Activity, Loader2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";

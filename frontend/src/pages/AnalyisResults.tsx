@@ -13,7 +13,7 @@ export default function AnalysisResult() {
     isLoading: isLatestLoading,
     isError: isLatestError,
     error: latestError,
-  } = useResultData(!isViewingPastReport);
+  } = useResultData(!isViewingPastReport)
 
   const {
     data: pastData,

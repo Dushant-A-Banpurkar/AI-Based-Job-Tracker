@@ -17,7 +17,8 @@ const fetchHistory = async (data: fetchHistory) => {
   });
   if (!res.ok) {
     const errorData = await res.json();
-    throw new Error(errorData.error || "Failed to fetch History");
+    console.log(res.status)
+    throw new Error(errorData.error || `Failed to fetch History ${res.status}`);
   }
   return res.json();
 };

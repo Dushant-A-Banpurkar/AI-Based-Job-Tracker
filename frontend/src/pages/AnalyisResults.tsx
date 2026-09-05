@@ -13,7 +13,7 @@ export default function AnalysisResult() {
     isLoading: isLatestLoading,
     isError: isLatestError,
     error: latestError,
-  } = useResultData(!isViewingPastReport)
+  } = useResultData(!isViewingPastReport);
 
   const {
     data: pastData,
@@ -22,36 +22,44 @@ export default function AnalysisResult() {
     error: pastError,
   } = useGetHistoryById(id as string);
 
-  const isLoading=isViewingPastReport? isPastLoading :isLatestLoading;
-  const isError=isViewingPastReport ? isPastError: isLatestError;
-  const error=isViewingPastReport ? pastError:latestError;
-  const analysisResult=isViewingPastReport ? pastData:latestData;
+  const isLoading = isViewingPastReport ? isPastLoading : isLatestLoading;
+  const isErrorState = isViewingPastReport ? isPastError : isLatestError;
+  const error = isViewingPastReport ? pastError : latestError;
+
+  let verifiedResultData = null;
+  if (isViewingPastReport && pastData?.data?.analysisResult) {
+    verifiedResultData = pastData.data.analysisResult;
+  } else if (!isViewingPastReport && latestData?.data) {
+    verifiedResultData = latestData.data;
+  }
 
   if (isLoading) {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-[#c0392b]" />
         <p className="font-mono text-sm text-zinc-500">
-          Analyzing resume data...
+          Loading analysis data...
         </p>
       </div>
     );
   }
-  if (isError) {
+
+
+  if (isErrorState && !verifiedResultData) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="flex max-w-md items-center border border-red-200 bg-red-50 p-6 font-mono text-sm text-red-600">
+        <div className="flex max-w-md items-center border border-red-200 bg-red-50 p-6 font-mono text-sm text-red-600 gap-2">
           <AlertCircle className="h-6 w-6 shrink-0" />
           <span>
-            {error instanceof Error
-              ? error.message
-              : "Failed to load analysis results."}
+            {error instanceof Error ? error.message : "Failed to load analysis results."}
           </span>
         </div>
       </div>
     );
   }
-  if (!analysisResult || !analysisResult.data) {
+
+ 
+  if (!verifiedResultData) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
         <div className="border border-dashed border-zinc-300 p-20 text-center font-mono">
@@ -60,9 +68,12 @@ export default function AnalysisResult() {
       </div>
     );
   }
+
+
   return (
     <div className="w-full max-w-6xl mx-auto pt-6">
-      <Result resultData={analysisResult.data} />
+      <Result resultData={verifiedResultData} />
     </div>
   );
 }
+

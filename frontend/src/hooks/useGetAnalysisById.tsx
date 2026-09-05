@@ -10,7 +10,7 @@ const fetchHistoryById = async (id: string) => {
     credentials: "include",
   });
 
-  if (res.ok) {
+  if (!res.ok) {
     const errorData = await res.json();
     console.log(errorData)
     throw new Error(errorData.error || " Failed to Get Analysis Result");

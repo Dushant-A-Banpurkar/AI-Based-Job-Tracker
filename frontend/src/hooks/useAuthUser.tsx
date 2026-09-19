@@ -4,18 +4,18 @@ import Cookies from "js-cookie";
 
 const fetchAuthUser = async () => {
   const url=import.meta.env.VITE_BACKEND_API;
-  const [response] = await Promise.all([
-    fetch(`${url}/api/auth/me`, {
+  const response = await fetch(`${url}/api/auth/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+    });
 
-  if (!response.ok) throw new Error("Failed to fetcg user");
+    
+    if (!response.ok) {
+      return null;
+    }
   return response.json();
 };
 
@@ -24,7 +24,9 @@ export const useAuthUser = () => {
     queryKey: ["authUser"],
     queryFn: fetchAuthUser,
     retry: false,
-    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    staleTime: 1000 * 60 * 5,
   });
 
   useEffect(() => {

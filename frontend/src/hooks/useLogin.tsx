@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMutation, type UseMutationOptions, type UseMutationResult } from "@tanstack/react-query";
+import { useMutation, useQueryClient, type UseMutationOptions, type UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 interface LoginForm {
@@ -35,6 +35,7 @@ export const useSignIn=()=>{
 
     const [errors,setErrors]=useState<Record<string,string>>({});
     const navigate=useNavigate();
+    const queryClient=useQueryClient();
 
     const mutation: UseMutationResult<string,Error,LoginForm>=useMutation({
         mutationFn:sigin,
@@ -42,9 +43,13 @@ export const useSignIn=()=>{
             setErrors({general:errors.message})
             toast.error("Failed to login")
         },
-        onSuccess:()=>{
+        onSuccess:async()=>{
             // localStorage.setItem('token',data.token),
-            toast.success("Login Successfully")
+            toast.success("Login Successfully");
+
+            queryClient.setQueryData(["authUser"],data);
+
+            await queryClient.invalidateQueries({queryKey:["authUser"]})
             navigate('/dashboard')
         }
     }as UseMutationOptions<string, Error, LoginForm>);

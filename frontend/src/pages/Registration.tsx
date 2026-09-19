@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {useSignUp}  from "../hooks/useSignUp";
-import { Loader2, Mail, Lock, Text, User } from "lucide-react";
+import { Loader2, Mail, Lock, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Toaster } from "sonner";
 
@@ -20,27 +20,39 @@ const Registration = () => {
   const isLoading=mutation.isPending;
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-background">
       <Toaster />
-      <div className="mt-10">
-        <span className="text-white text-2xl">AI Job Tracker</span>
+
+      {/* Header / Brand */}
+      <div className="mb-6 sm:mb-8 text-center">
+        <span className="text-white text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">
+          AI Job Tracker
+        </span>
       </div>
 
-      <Card className="w-full max-w-lg text-lg bg-transparent text-white mt-6">
-        <CardHeader className="text-center">
-          <CardTitle className="text-4xl">Create an account</CardTitle>
-          <CardDescription className="text-xl">
+      {/* Card Component */}
+      <Card className="w-full max-w-md sm:max-w-lg bg-transparent text-white border-border/50 shadow-xl backdrop-blur-sm">
+        <CardHeader className="text-center space-y-2 px-4 sm:px-6 pt-6">
+          <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
+            Create an account
+          </CardTitle>
+          <CardDescription className="text-sm sm:text-base md:text-lg text-muted-foreground">
             Get started with your free resume analysis
           </CardDescription>
         </CardHeader>
-        <CardContent>
+
+        <CardContent className="px-4 sm:px-6 pb-6 pt-2">
           <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-6">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-4 sm:gap-5">
+              
+              {/* First Name & Last Name (Stacked on mobile, 2 columns on sm screens and above) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="First Name">First Name</Label>
+                  <Label htmlFor="firstname" className="text-sm font-medium">
+                    First Name
+                  </Label>
                   <div className="relative">
-                    <Text className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                    <User className="absolute top-1/2 left-3 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
                     <Input
                       id="firstname"
                       name="firstname"
@@ -48,18 +60,21 @@ const Registration = () => {
                       value={formData.firstname}
                       onChange={handleInputChange}
                       required
-                      className="pl-10 text-xl w-56"
+                      className="pl-9 sm:pl-10 text-base sm:text-sm h-10 sm:h-11 w-full"
                       type="text"
                     />
-                    {errors.firstname && (
-                      <p className="text-red-500">{errors.firstname}</p>
-                    )}
                   </div>
+                  {errors.firstname && (
+                    <p className="text-xs sm:text-sm text-red-500 mt-1">{errors.firstname}</p>
+                  )}
                 </div>
+
                 <div className="grid gap-2">
-                  <Label htmlFor="Last Name">Last Name</Label>
+                  <Label htmlFor="lastname" className="text-sm font-medium">
+                    Last Name
+                  </Label>
                   <div className="relative">
-                    <Text className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                    <User className="absolute top-1/2 left-3 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
                     <Input
                       id="lastname"
                       name="lastname"
@@ -67,19 +82,23 @@ const Registration = () => {
                       value={formData.lastname}
                       onChange={handleInputChange}
                       required
-                      className="pl-10 text-xl w-56"
+                      className="pl-9 sm:pl-10 text-base sm:text-sm h-10 sm:h-11 w-full"
                       type="text"
                     />
-                    {errors.lastname && (
-                      <p className="text-red-500">{errors.lastname}</p>
-                    )}
                   </div>
+                  {errors.lastname && (
+                    <p className="text-xs sm:text-sm text-red-500 mt-1">{errors.lastname}</p>
+                  )}
                 </div>
               </div>
+
+              {/* Username Field */}
               <div className="grid gap-2">
-                <Label htmlFor="Username">Username</Label>
+                <Label htmlFor="username" className="text-sm font-medium">
+                  Username
+                </Label>
                 <div className="relative">
-                  <User className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                  <User className="absolute top-1/2 left-3 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     id="username"
                     name="username"
@@ -87,18 +106,22 @@ const Registration = () => {
                     value={formData.username}
                     onChange={handleInputChange}
                     required
-                    className="pl-10 text-xl"
+                    className="pl-9 sm:pl-10 text-base sm:text-sm h-10 sm:h-11 w-full"
                     type="text"
                   />
-                  {errors.username && (
-                      <p className="text-red-500">{errors.username}</p>
-                    )}
                 </div>
+                {errors.username && (
+                  <p className="text-xs sm:text-sm text-red-500 mt-1">{errors.username}</p>
+                )}
               </div>
+
+              {/* Email Field */}
               <div className="grid gap-2">
-                <Label htmlFor="Email">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium">
+                  Email
+                </Label>
                 <div className="relative">
-                  <Mail className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                  <Mail className="absolute top-1/2 left-3 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     id="email"
                     name="email"
@@ -106,56 +129,65 @@ const Registration = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="pl-10 text-xl"
+                    className="pl-9 sm:pl-10 text-base sm:text-sm h-10 sm:h-11 w-full"
                     type="email"
                   />
-                  {errors.email && (
-                      <p className="text-red-500">{errors.email}</p>
-                    )}
                 </div>
+                {errors.email && (
+                  <p className="text-xs sm:text-sm text-red-500 mt-1">{errors.email}</p>
+                )}
               </div>
+
+              {/* Password Field */}
               <div className="grid gap-2">
-                <Label htmlFor="Password">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium">
+                  Password
+                </Label>
                 <div className="relative">
-                  <Lock className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                  <Lock className="absolute top-1/2 left-3 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     id="password"
+                    name="password"
+                    type="password"
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={handleInputChange}
                     required
-                    name="password"
-                    className="pl-10 text-xl"
+                    className="pl-9 sm:pl-10 text-base sm:text-sm h-10 sm:h-11 w-full"
                   />
-                  {errors.password && (
-                      <p className="text-red-500">{errors.password}</p>
-                    )}
                 </div>
+                {errors.password && (
+                  <p className="text-xs sm:text-sm text-red-500 mt-1">{errors.password}</p>
+                )}
               </div>
+
+              {/* Submit Button */}
               <Button
-                className="w-full border"
+                className="w-full mt-2 h-10 sm:h-11 text-sm sm:text-base font-medium transition-all"
                 type="submit"
-                variant="ghost"
+                variant="outline"
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <>
-                    <Loader2 className="" />
-                    Creating account...
-                  </>
+                  <div className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Creating account...</span>
+                  </div>
                 ) : (
                   "Create Account"
                 )}
               </Button>
             </div>
           </form>
-          <div className="flex flex-row mt-6 text-center text-md gap-2 ">
+
+          {/* Sign In Link */}
+          <div className="flex flex-row items-center justify-center mt-6 text-xs sm:text-sm gap-1.5 text-center">
             <span className="text-muted-foreground">
               Already have an account?
             </span>
             <Link
               to="/login"
-              className="font-medium text-white hover:underline"
+              className="font-medium text-white hover:underline transition-colors"
             >
               Sign in
             </Link>
@@ -164,6 +196,7 @@ const Registration = () => {
       </Card>
     </div>
   );
+  
 };
 
 export default Registration;

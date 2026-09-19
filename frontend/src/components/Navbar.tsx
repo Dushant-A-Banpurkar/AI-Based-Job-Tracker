@@ -6,73 +6,98 @@ import { useAuthUser } from "@/hooks/useAuthUser";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const { data: user } = useAuthUser();
-  
+
+  const closeMenu = () => setIsOpen(false);
+
   return (
-    <nav className="fixed top-0 z-50 w-full border-b  backdrop-blur-xl">
-      <div className="mx-auto flex h-16 justify-between items-center md:px-16 px-4">
-        <span className="text-white text-lg">AI Job Tracker</span>
-        <div className="flex flex-row gap-4">
-          <div className="hidden items-center gap-4 md:flex">
-            {!user ? (
-              <>
-                <Button
-                  variant="ghost"
-                  className="text-white hover:bg-transparent hover:border hover:text-white text-lg"
-                  asChild
-                >
-                  <Link to="/login">Login</Link>
-                </Button>
-                <Button asChild variant="outline">
-                  <Link to="/">Sign Up</Link>
-                </Button>
-              </>
-            ) : (
+    <nav className="fixed top-0 z-50 w-full border-b border-stone-800/80 bg-stone-950/80 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        
+
+        <Link
+          to="/"
+          className="text-white text-lg sm:text-xl font-bold tracking-tight hover:opacity-90 transition-opacity"
+          onClick={closeMenu}
+        >
+          AI Job Tracker
+        </Link>
+
+        <div className="hidden items-center gap-3 md:flex">
+          {!user ? (
+            <>
               <Button
-                variant="default"
-                className="text-lg font-semibold bg-blue-700 shadow-2xl shadow-blue-500  hover:shadow-2xl hover:shadow-blue-700 hover:bg-blue-700"
+                variant="ghost"
+                className="text-white hover:bg-stone-800/60 hover:text-white"
                 asChild
               >
-                <Link to="/analysis">Get Started</Link>
+                <Link to="/login">Login</Link>
               </Button>
-            )}
-          </div>
-        </div>
-        <Button
-          variant="outline"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? (
-            <X className="h-5 w-5"></X>
+              <Button 
+                asChild 
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-md transition-all"
+              >
+                <Link to="/register">Sign Up</Link>
+              </Button>
+            </>
           ) : (
-            <Menu className="h-5 w-5"></Menu>
-          )}
-        </Button>
-
-        {isOpen ? (
-          <div className="absolute top-16 left-0 z-50 w-full bg-black/90 border border-b border-gray-800 p-4 shadow-xl flex flex-col gap-4">
-            <Button
-              variant="ghost"
-              className="text-white hover:bg-transparent hover:border hover:text-white text-lg"
-              asChild
-            >
-              <Link to="/login">Login</Link>
-            </Button>
             <Button
               variant="default"
-              className="text-lg font-semibold bg-blue-700 shadow-2xl shadow-blue-500  hover:shadow-2xl hover:shadow-blue-700 hover:bg-blue-700"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-md shadow-blue-600/20 transition-all"
               asChild
             >
-              <Link to="/signup">Get Started</Link>
+              <Link to="/dashboard">Get Started</Link>
             </Button>
-          </div>
-        ) : (
-          <></>
-        )}
+          )}
+        </div>
+
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden text-white hover:bg-stone-800/60"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle Menu"
+        >
+          {isOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
+        </Button>
       </div>
+
+      {isOpen && (
+        <div className="md:hidden border-b border-stone-800 bg-stone-950/95 backdrop-blur-xl px-4 pt-3 pb-6 shadow-2xl flex flex-col gap-3">
+          {!user ? (
+            <>
+              <Button
+                variant="ghost"
+                className="w-full justify-center text-white hover:bg-stone-800/60 text-base"
+                asChild
+                onClick={closeMenu}
+              >
+                <Link to="/login">Login</Link>
+              </Button>
+              <Button
+                className="w-full justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base"
+                asChild
+                onClick={closeMenu}
+              >
+                <Link to="/register">Sign Up</Link>
+              </Button>
+            </>
+          ) : (
+            <Button
+              className="w-full justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base"
+              asChild
+              onClick={closeMenu}
+            >
+              <Link to="/dashboard">Get Started</Link>
+            </Button>
+          )}
+        </div>
+      )}
     </nav>
   );
 };

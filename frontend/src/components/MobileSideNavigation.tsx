@@ -54,7 +54,7 @@ const navSections: { section: string; items: NavItemData[] }[] = [
         id: "resume",
         label: "Resume Analyzer",
         icon: FileSearch,
-        path: "/analysis",
+        path: "/analyzer",
       },
       {
         id: "addjob",

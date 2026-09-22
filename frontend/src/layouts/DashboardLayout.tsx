@@ -13,13 +13,13 @@ const DashBoardLayout = () => {
 
   useEffect(() => {
     if (!user && !isLoading) {
-      navigate("/");
+      navigate("/login");
     }
   }, [navigate, user, isLoading]);
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-zinc-950">
+      <div className="flex h-screen w-full items-center justify-center bg-zinc-950 p-4">
         <Button variant="outline" disabled className="border-blue-600 text-white">
           <Spinner className="mr-2 h-4 w-4 animate-spin" />
           Preparing your dashboard...
@@ -32,26 +32,22 @@ const DashBoardLayout = () => {
 
   return (
     <GridBackgroundDemo>
-      {/* IMPORTANT: We add a flex container here. 
-          The Sidebar is fixed/sticky, and the main area scrolls.
-      */}
-      <div className="flex min-h-screen w-full">
+      <div className="relative flex min-h-screen w-full overflow-x-hidden">
         
-        {/* Sidebar - Desktop Only */}
-        <div className="hidden md:block fixed">
+        {/* Desktop Sidebar (Fixed) */}
+        <aside className="hidden md:block fixed inset-y-0 left-0 z-40 w-64 border-r border-stone-800/80 bg-stone-950/90 backdrop-blur-md">
           <SideNavigationbar />
+        </aside>
+
+        {/* Main Content Area (Offset on desktop, full-width on mobile) */}
+        <div className="flex flex-1 flex-col min-w-0 md:pl-64">
+          <TopNavBar />
+
+          <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6">
+            <Outlet />
+          </main>
         </div>
 
-        {/* Main Content Area */}
-        {/* ml-[220px] matches your sidebar width exactly. 
-            flex-1 makes it take up the remaining screen width.
-        */}
-        <main className="flex-1 ml-55 md:pb-0">
-          <TopNavBar/>
-          <div className="container mx-auto py-6 w-full">
-             <Outlet />
-          </div>
-        </main>
       </div>
     </GridBackgroundDemo>
   );

@@ -14,7 +14,7 @@ function JobApplications() {
   const navigate = useNavigate();
 
   const handleUpdate = (app: JobApp) => {
-    navigate(`/edit-application/${app._id}`);
+    navigate(`/updateapplication/${app._id}`);
   };
 
   return (

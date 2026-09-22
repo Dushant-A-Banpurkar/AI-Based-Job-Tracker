@@ -1,3 +1,4 @@
+import { json } from "zod";
 import AddApplicationData from "../models/addApplication.js";
 import UserData from "../models/userModel.js";
 export const addApplication = async (req, res) => {
@@ -102,14 +103,21 @@ export const getJobApplicationById = async (req, res) => {
 
 export const updateJobApplication = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.body._id || req.body.id;
     const { userId } = req.body;
-
-    const application = await AddApplicationData.findOne({ _id: id, userId });
-    if (!application)
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+    const user = await UserData.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const application = await AddApplicationData.findById(id);
+    if (application.userId.toString() !== userId.toString()) {
       return res
-        .status(404)
-        .json({ error: "Applications not found or unauthorized" });
+        .status(403)
+        .json({ error: "Unauthorized to update this application" });
+    }
     const {
       company,
       role,
@@ -120,14 +128,15 @@ export const updateJobApplication = async (req, res) => {
       notes,
     } = req.body;
 
-    if (company) application.company = company;
-    if (role) application.role = role;
-    if (status) application.status = status;
-    if (applied_date) application.applied_date = applied_date;
-    if (location) application.location = location;
-    if (interview_date) application.interview_date = interview_date;
-    if (notes) application.notes = notes;
-
+    if (company !== undefined) application.company = company;
+    if (role !== undefined) application.role = role;
+    if (status !== undefined) application.status = status;
+    if (applied_date !== undefined) application.applied_date = applied_date;
+    if (location !== undefined) application.location = location;
+    if (interview_date !== undefined)
+      application.interview_date = interview_date;
+    if (notes !== undefined) application.notes = notes;
+    if (notes !== undefined) application.notes = notes;
     const updateApplication = await application.save();
 
     return res.status(200).json({

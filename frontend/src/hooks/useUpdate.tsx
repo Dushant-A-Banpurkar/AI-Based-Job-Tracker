@@ -1,15 +1,18 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthUser } from "./useAuthUser";
 import { useNavigate } from "react-router-dom";
 import {
   useMutation,
+  useQueryClient,
   type UseMutationOptions,
   type UseMutationResult,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 interface updateApplication {
+  _id?: string;
   userId: string;
   company: string;
   role: string;
@@ -38,10 +41,12 @@ const update = async (data: updateApplication) => {
   return res.json();
 };
 
-export const useUpdate = () => {
+export const useUpdate = (initialData?: any) => {
   const { data: user } = useAuthUser();
+  const querryClient = useQueryClient();
   const [formData, setFormData] = useState<updateApplication>({
-    userId: user._id,
+    _id: "",
+    userId: user?._id || "",
     company: "",
     role: "",
     status: "",
@@ -51,19 +56,35 @@ export const useUpdate = () => {
     notes: "",
   });
 
-  const [error, setErrors] = useState<Record<string, string>>({});
-
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        _id: initialData._id || "",
+        userId: user?._id || initialData.userId || "",
+        company: initialData.company || "",
+        role: initialData.role || "",
+        status: initialData.status || "",
+        applied_date: initialData.applied_date || "",
+        location: initialData.location || "",
+        interview_date: initialData.interview_date || "",
+        notes: initialData.notes || "",
+      });
+    }
+  }, [initialData, user]);
 
   const mutation: UseMutationResult<string, Error, updateApplication> =
     useMutation({
       mutationFn: update,
-      
+
       onError(error: any) {
         setErrors({ general: error.message });
         toast.error("Failed to Add Application");
       },
       onSuccess: () => {
+        querryClient.invalidateQueries({ queryKey: ["applications"] });
         toast.success("Application Update Suceesfully");
         navigate("/jobapplication");
       },
@@ -75,23 +96,23 @@ export const useUpdate = () => {
     >,
   ) => {
     const { name, value } = e.target;
-    setFormData((prev:any) => ({
+    setFormData((prev: any) => ({
       ...prev,
       [name]:
-        (name === "applied_date") || (name === "interview_date") && value
+        (name === "applied_date" || name === "interview_date") && value
           ? new Date(value)
           : value,
     }));
   };
 
-  const handleSubmit=async (e:React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({})
+    setErrors({});
     try {
-        mutation.mutate(formData);
-    } catch (error:any) {
-        toast.error(error.message)
+      mutation.mutate(formData);
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
-  return [formData,error,handleInputChange,handleSubmit,mutation]
+  return [formData, errors, handleInputChange, handleSubmit, mutation] as const;
 };

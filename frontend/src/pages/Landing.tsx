@@ -64,13 +64,11 @@ const Landing = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" disabled size="sm">
-            <Spinner className="mr-2 h-5 w-5 animate-spin" />
-            Welcome to AI-Powered Job Tracker
-          </Button>
-        </div>
+      <div className="flex h-screen w-full items-center justify-center bg-zinc-950 p-4">
+        <Button variant="outline" disabled className="border-blue-600 text-white">
+          <Spinner className="mr-2 h-4 w-4 animate-spin" />
+          Welcome to AI-Powered Job Tracker
+        </Button>
       </div>
     );
   }

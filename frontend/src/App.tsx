@@ -13,6 +13,7 @@ import AddApplication from "./pages/AddApplication";
 import { Toaster } from "sonner";
 import ResumeAnalyzer from "./pages/ResumeAnalyzer";
 import AnalysisResult from "./pages/AnalyisResults";
+import UpdateApplication from "./pages/UpdateApplication";
 
 
 
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/analysis/:id" element={<AnalysisResult />} />
           <Route path="/jobapplication" element={<JobApplication/>}/>
           <Route path="/addapplication" element={<AddApplication/>}/>
+          <Route path="/updateapplication/:id" element={<UpdateApplication/>}/>
         </Route>
         <Route path="/register" element={<Registration />} />
       </Routes>

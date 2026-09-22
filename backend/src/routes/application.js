@@ -9,6 +9,6 @@ const router=express.Router();
 router.post("/add",addApplication);
 router.post("/get",getJobApplication)
 router.get('/id/:id',getJobApplicationById)
-router.put('/update/:id',updateJobApplication)
+router.put('/update',updateJobApplication)
 
 export default router;

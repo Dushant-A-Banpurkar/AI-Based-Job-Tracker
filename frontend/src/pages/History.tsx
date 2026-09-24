@@ -17,21 +17,20 @@ export default function AnalysisTimelinePage() {
   const { data, isLoading, isError, error } = useGetHistory();
   const navigate = useNavigate();
 
-  // 1. Data Transformation & Trend Calculation
+  
   const formattedHistory = useMemo(() => {
     const rawHistory = Array.isArray(data) ? data : data?.data || [];
 
-    // Sort from newest to oldest
+  
     const sorted = [...rawHistory].sort(
       (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
     return sorted.map((item, index, array) => {
-      // The "previous" analysis is the NEXT item in this descending array
+   
       const previousItem = array[index + 1];
       const dateObj = new Date(item.createdAt);
 
-      // Handle cases where recruiterSummary might be an object or string
       const summaryText =
         typeof item.recruiterSummary === "string"
           ? item.recruiterSummary
@@ -60,7 +59,6 @@ export default function AnalysisTimelinePage() {
     });
   }, [data]);
 
-  // 2. Loading State
   if (isLoading) {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
@@ -72,7 +70,7 @@ export default function AnalysisTimelinePage() {
     );
   }
 
-  // 3. Error State
+  
   if (isError) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center px-4">
@@ -86,7 +84,7 @@ export default function AnalysisTimelinePage() {
     );
   }
 
-  // 4. Empty State
+
   if (formattedHistory.length === 0) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center px-4">
@@ -105,10 +103,10 @@ export default function AnalysisTimelinePage() {
     );
   }
 
-  // 5. Main UI
+
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-8 sm:gap-10 pb-16 sm:pb-20 font-mono px-4 sm:px-6 lg:px-8">
-      {/* Header */}
+
       <div className="flex flex-col gap-1.5 sm:gap-2">
         <div className="flex items-center gap-2.5 sm:gap-3">
           <span className="text-xl sm:text-2xl text-[#c0392b] font-bold">//</span>
@@ -121,9 +119,9 @@ export default function AnalysisTimelinePage() {
         </p>
       </div>
 
-      {/* Timeline Wrapper */}
+ 
       <div className="relative ml-2 sm:ml-4 md:ml-8 mt-2 sm:mt-4">
-        {/* Continuous Timeline Vertical Line */}
+  
         <div className="absolute bottom-0 left-0 top-0 w-0.5 bg-[#1a1a1a] dark:bg-zinc-800" />
 
         <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
@@ -141,7 +139,7 @@ export default function AnalysisTimelinePage() {
   );
 }
 
-// --- Sub-Component: Timeline Node ---
+
 function TimelineNode({
   data,
   isLatest,
@@ -170,7 +168,7 @@ function TimelineNode({
 
   return (
     <div className="relative pl-5 sm:pl-8 md:pl-10 group">
-      {/* Bullet Dot - Centered exactly on the left line */}
+    
       <div
         className={cn(
           "absolute -left-[5px] top-1.5 h-3 w-3 rounded-none border-2 transition-colors z-10",
@@ -180,7 +178,7 @@ function TimelineNode({
         )}
       />
 
-      {/* Date & Time Header */}
+ 
       <div className="mb-2.5 sm:mb-3 flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] sm:text-xs text-zinc-500">
         <span className="flex items-center gap-1.5 font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-300">
           <Calendar className="h-3.5 w-3.5 text-[#c0392b]" />
@@ -190,14 +188,14 @@ function TimelineNode({
         <span>{data.time}</span>
       </div>
 
-      {/* Interactive Card */}
+  
       <div className="relative w-full max-w-3xl cursor-pointer" onClick={onView}>
-        {/* Brutalist Shadow Box */}
+      
         <div className="absolute inset-0 translate-x-1 sm:translate-x-1.5 translate-y-1 sm:translate-y-1.5 border border-[#1a1a1a] bg-transparent transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5 dark:border-zinc-700" />
 
-        {/* Outer Card Body */}
+ 
         <div className="relative flex flex-col border border-[#1a1a1a] bg-[#f4f1e8] dark:bg-zinc-900 transition-colors dark:border-zinc-800">
-          {/* Top Section: Company, Role, Trend & Score */}
+          
           <div className="flex flex-col gap-3 p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-0.5 sm:space-y-1 pr-2">
               <h3 className="font-syne text-base sm:text-lg md:text-xl font-bold text-zinc-900 dark:text-white break-words">
@@ -208,7 +206,7 @@ function TimelineNode({
               </p>
             </div>
 
-            {/* Score & Trend Container */}
+         
             <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 pt-2 sm:pt-0 border-t border-zinc-200/60 sm:border-t-0 dark:border-zinc-800/60">
               {data.previousScore !== null && (
                 <div className="flex flex-col sm:items-end">
@@ -234,14 +232,13 @@ function TimelineNode({
                 </div>
               )}
 
-              {/* Overall Score Box */}
               <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center border border-[#1a1a1a] bg-white text-zinc-900 text-base sm:text-lg font-black dark:bg-black dark:text-white dark:border-zinc-700">
                 {data.score}
               </div>
             </div>
           </div>
 
-          {/* Bottom Section: Chance Badge, Insight & Action Button */}
+      
           <div className="flex flex-col gap-4 p-4 sm:p-5 bg-white dark:bg-black/40 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex flex-col gap-2.5 sm:gap-3">
               <div>
@@ -262,7 +259,6 @@ function TimelineNode({
               </div>
             </div>
 
-            {/* View Report Indicator */}
             <div className="flex items-center justify-end sm:justify-start gap-2 text-xs font-bold uppercase tracking-widest text-[#c0392b] pt-2 sm:pt-0 border-t border-zinc-100 sm:border-t-0 dark:border-zinc-800/40 transition-transform group-hover:translate-x-1 shrink-0">
               <span>Views Report</span>
               <ArrowRight className="h-3.5 w-3.5" />

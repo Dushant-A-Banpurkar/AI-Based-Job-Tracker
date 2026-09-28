@@ -1,226 +1,177 @@
 # AI-Based Job Tracker
 
-An AI-powered full-stack job tracking platform that helps users manage job applications, analyze resumes, monitor application progress, and streamline the job search workflow.
+AI-Based Job Tracker is a full-stack web application for organizing a job search and comparing a resume with a specific job description. Users can create an account, record and update job applications, upload a PDF resume, and review AI-generated resume analysis and previous results.
 
-## 🚀 Features
+## Features
 
-* 🔐 User Authentication (JWT-based)
-* 👤 Login & Signup System
-* 📊 Job Application Dashboard
-* 📝 Add & Track Job Applications
-* 📌 Application Status Monitoring
-* 🤖 AI Resume Analyzer
-* 📂 Resume Management
-* 📈 Job Tracking Analytics
-* 🔔 Toast Notifications
-* 🌐 Responsive Frontend UI
-* ☁️ MongoDB Atlas Integration
-* 🔒 Secure Password Hashing with Bcrypt
-* ⚡ Modern React + Vite Frontend
+- Account registration and sign-in, with session cookies
+- Create, view, and update job application records
+- Upload a PDF resume with a company, role, and job description
+- Extract resume text and request an AI-powered match analysis
+- View analysis results and analysis history
+- Responsive React interface
 
----
+## Technology
 
-# 🛠️ Tech Stack
+| Area | Tools |
+| --- | --- |
+| Frontend | React 19, TypeScript, Vite, React Router, TanStack Query, Tailwind CSS |
+| Backend | Node.js, Express 5, Mongoose, JWT, bcrypt |
+| Data and services | MongoDB, Redis, OpenAI API |
 
-## Frontend
+The repository contains two independently installed applications: `frontend/` and `backend/`.
 
-* React.js
-* TypeScript
-* Vite
-* Tailwind CSS
-* React Query
-* React Router DOM
-* React Hot Toast
-* Zod Validation
-* Axios
+## Requirements
 
-## Backend
+- Node.js 20.19+ (or 22.12+) and npm
+- A MongoDB database
+- A Redis instance
+- An OpenAI API key
 
-* Node.js
-* Express.js
-* MongoDB Atlas
-* JWT Authentication
-* Bcrypt
-* Mongoose
+You will also need credentials for the services you configure. Do not commit `.env` files, API keys, or production secrets.
 
----
+## Installation
 
-# 📁 Project Structure
-
-```bash
-AI-Based-Job-Tracker/
-│
-├── frontend/       # React frontend
-│
-├── backend/        # Node.js backend
-│
-└── README.md
-```
-
----
-
-# ⚙️ Installation
-
-## 1️⃣ Clone Repository
+Clone the repository and install dependencies for each application:
 
 ```bash
 git clone https://github.com/Dushant-A-Banpurkar/AI-Based-Job-Tracker.git
-```
-
-```bash
 cd AI-Based-Job-Tracker
-```
 
----
-
-# 🔥 Backend Setup
-
-## Navigate to backend folder
-
-```bash
 cd backend
-```
-
-## Install dependencies
-
-```bash
 npm install
+cd ../frontend
+npm install
+cd ..
 ```
 
-## Create .env file
+### Configure the backend
+
+Create `backend/.env` with the following values. Use a backend port other than the frontend's Vite port; the example uses `5000`.
 
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection
-JWT_SECRET=your_secret_key
+MONGODB_URI=mongodb://127.0.0.1:27017/ai-job-tracker
+JWT_SECRET=replace-with-a-long-random-secret
+JWT_EXPIRE=7d
+REDIS_URL=redis://127.0.0.1:6379
+OPENAI_API_KEY=replace-with-your-openai-api-key
+NODE_ENV=development
 ```
 
-## Run backend server
+`MONGODB_URI`, `JWT_SECRET`, `REDIS_URL`, and `OPENAI_API_KEY` are required by the backend at startup. `PORT` defaults to `4000`, `JWT_EXPIRE` defaults to `7d`, and `NODE_ENV` defaults to `development`.
 
-### Development Mode
+If you configure the optional S3 integration, also provide `AWS_ACCESS_KEY`, `AWS_SECRET_KEY`, `AWS_REGION`, and `AWS_S3_BUCKET`. These are not required for the current in-memory PDF extraction flow.
+
+### Configure the frontend
+
+Create `frontend/.env`:
+
+```env
+VITE_BACKEND_API=http://localhost:5000
+```
+
+Set this to the backend origin, without an `/api` suffix. Vite serves the frontend at `http://localhost:4000` by default.
+
+## Usage
+
+Start each application in a separate terminal from the repository root.
+
+**Backend**
 
 ```bash
+cd backend
 npm run dev
 ```
 
-### Production Mode
+The API starts at `http://localhost:5000` with the configuration above.
 
-```bash
-npm start
-```
-
----
-
-# 🎨 Frontend Setup
-
-## Navigate to frontend folder
+**Frontend**
 
 ```bash
 cd frontend
-```
-
-## Install dependencies
-
-```bash
-npm install
-```
-
-## Create .env file
-
-```env
-VITE_API_URL=http://localhost:5000
-```
-
-## Start frontend
-
-```bash
 npm run dev
 ```
 
----
+Open `http://localhost:4000`, register or sign in, and then:
 
-# 🌍 Deployment
+1. Add a job application with the available application form.
+2. View your applications and update a record when its details or status change.
+3. Open the resume analyzer, upload a PDF, and enter the company, role, and job description.
+4. Submit the analysis and review the result. Use the history view to revisit previous analyses.
 
-## Frontend Deployment
+Resume text and job-description data are stored by the application and sent to OpenAI for analysis. Only use documents and data you are comfortable processing through those services.
 
-Deploy frontend on:
+### Production build
 
-* Vercel
+Build and preview the frontend with:
 
-## Backend Deployment
+```bash
+cd frontend
+npm run build
+npm run preview
+```
 
-Deploy backend on:
+Run the backend with `npm start` from `backend/`. Configure production environment variables and database/service access in your hosting environment; do not place production secrets in frontend variables or source control. The backend currently permits requests from specific configured frontend origins, so update its CORS allowlist in `backend/src/main.js` when deploying to a different frontend domain.
 
-* Render
-* Railway
+## API overview
 
----
+All API routes are mounted beneath the configured backend origin.
 
-# 📸 Screenshots
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/api/auth/signup` | Register an account |
+| `POST` | `/api/auth/signin` | Sign in |
+| `GET` | `/api/auth/me` | Get the current signed-in user |
+| `POST` | `/api/auth/logout` | Sign out |
+| `POST` | `/api/application/add` | Add an application |
+| `POST` | `/api/application/get` | List applications |
+| `GET` | `/api/application/id/:id` | Get an application by ID |
+| `PUT` | `/api/application/update` | Update an application |
+| `POST` | `/api/pdf/upload-single` | Upload a PDF resume and associated job details |
+| `POST` | `/api/analysis/analyzing/:userId` | Generate an analysis |
+| `GET` | `/api/analysis/getanalysis/:id` | Get an analysis by ID |
+| `POST` | `/api/analysis/analysis-history` | Get analysis history |
 
-Add your project screenshots here.
+## Development commands
 
-Example: 
+Run these from the relevant package directory:
 
+| Directory | Command | Description |
+| --- | --- | --- |
+| `frontend/` | `npm run dev` | Start the Vite development server |
+| `frontend/` | `npm run build` | Type-check and build the frontend |
+| `frontend/` | `npm run lint` | Run ESLint |
+| `frontend/` | `npm run preview` | Preview the production build |
+| `backend/` | `npm run dev` | Start the API with nodemon |
+| `backend/` | `npm start` | Start the API with Node.js |
 
-<img width="1912" height="923" alt="image" src="https://github.com/user-attachments/assets/c9370ce7-9fd9-4355-b8c0-a5c8f89126f9" />
-<img width="1887" height="931" alt="image" src="https://github.com/user-attachments/assets/87656f96-e3b9-4fcf-9cc2-64ceed1e07e7" />
-<img width="1913" height="918" alt="image" src="https://github.com/user-attachments/assets/ac71e7d4-14be-43ad-b186-242e82c65880" />
+## Contributing
 
+Contributions, bug reports, and suggestions are welcome. Before making a change:
 
----
+1. Open an issue to discuss substantial features or behavior changes.
+2. Fork the repository and create a focused branch from the default branch.
+3. Make the change, keeping frontend and backend behavior and documentation in sync.
+4. Run the relevant checks: `npm run lint` and `npm run build` in `frontend/`; run the backend with `npm run dev` and verify the affected API behavior.
+5. Open a pull request describing the change, the reason for it, and any manual or automated checks performed.
 
-# 🔮 Future Improvements
+Keep credentials and personal resume data out of commits, logs, screenshots, and pull-request examples. There is currently no backend test script defined in `backend/package.json`.
 
-* 🤖 AI Auto Job Apply Agent
-* 🧠 Smart Job Recommendations
-* 📄 AI Cover Letter Generator
-* 📬 Email Notifications
-* 📊 Advanced Analytics Dashboard
-* 🧩 Browser Automation Integration
-* 📱 Fully Optimized Mobile UI
-* 🌐 Multi-language Support
+## Project layout
 
----
-
-# 🧠 AI Agent Vision
-
-The long-term vision of this project is to build an intelligent AI job assistant capable of:
-
-* Analyzing job descriptions
-* Matching resumes with job requirements
-* Auto-filling job applications
-* Tracking application progress automatically
-* Helping users optimize resumes for ATS systems
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome.
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit changes
-4. Push to branch
-5. Open a Pull Request
-
----
-
-# 📜 License
-
-This project is licensed under the MIT License.
-
----
-
-# 👨‍💻 Author
-
-## Dushant Banpurkar
-
-* GitHub: [https://github.com/Dushant-A-Banpurkar](https://github.com/Dushant-A-Banpurkar)
-
----
-
-# ⭐ Support
-
-If you like this project, give it a star on GitHub.
+```text
+.
+├── backend/
+│   └── src/
+│       ├── controllers/   # Request handling and application logic
+│       ├── models/        # MongoDB models
+│       ├── routes/        # Express API routes
+│       └── config/        # Environment, database, and service configuration
+└── frontend/
+    └── src/
+        ├── components/    # Reusable UI components
+        ├── hooks/         # API and application hooks
+        ├── layouts/       # Shared page layouts
+        └── pages/         # Application screens
+```

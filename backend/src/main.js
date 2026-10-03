@@ -36,7 +36,7 @@ app.listen(env.port, () => {
   connectMongoDB();
 
   const renderUrl=env.render;
-  setInterval(() => {
+  setInterval(async() => {
     try {
       const response=await fetch(renderUrl);
       console.log(`Keep-alive ping successful: ${response.status}`);

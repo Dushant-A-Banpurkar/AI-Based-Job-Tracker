@@ -6,7 +6,7 @@ const navItems = [
   { id: "dashboard", label: "Dashboard", path: "/dashboard" },
   { id: "jobs", label: "Job Applications", path: "/jobapplication" },
   { id: "timeline", label: "Timeline", path: "/history" },
-  { id: "resume", label: "Resume Analyzer", path: "/analysis" },
+  { id: "resume", label: "Resume Analyzer", path: "/analyzer" },
 ];
 
 interface TopNavBarProps {

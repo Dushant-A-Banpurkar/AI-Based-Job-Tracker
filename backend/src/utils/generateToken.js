@@ -25,8 +25,8 @@ export const generateTokenAndSetCookies =async (userId, res) => {
     console.log("➡️ Immediate Redis Check:", savedCheck ? "✅ SAVED OK" : "❌ SAVE FAILED");
     res.cookie("jwt", token, {
       maxAge: mstonumber(expiresIn),
-      httpOnly: true, //prevent XSS attack cross-site scripting attacks
-      sameSite: "none", // CSRF attacks cross-site request forgery attacks
+      httpOnly: true, 
+      sameSite: "none", 
       secure: true,
     });
   } catch (error) {

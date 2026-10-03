@@ -102,8 +102,8 @@ export const logout = async (req, res) => {
     res.cookie("jwt", "", {
       maxAge: 0,
       httpOnly: true,
-      sameSite: "strict",
-      secure:env.node !== "development"
+      sameSite: "none",
+      secure:true
     });
     const token=req.cookie?.jwt;
     if(token){

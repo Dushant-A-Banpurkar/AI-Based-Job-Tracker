@@ -11,7 +11,7 @@ const app = express();
 
 app.use(
   cors({
-    origin:[ "http://localhost:4000","https://ai-based-job-tracker.vercel.app"],
+    origin:[ "http://localhost:4000","https://ai-based-job-tracker.vercel.app/","https://ai-based-job-tracker-frontend.vercel.app/"],
     credentials: true,
   }),
 );

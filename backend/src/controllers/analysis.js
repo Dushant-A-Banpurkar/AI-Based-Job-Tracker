@@ -1,4 +1,4 @@
-import { openai } from "../config/openai.js";
+import { openai,gemini } from "../config/openai.js";
 import resumeData from "../models/resumeModel.js";
 import * as dotenv from "dotenv";
 import Analysis from "../models/analysisModel.js";
@@ -8,7 +8,8 @@ import UserData from "../models/userModel.js";
 import { GoogleGenAI } from "@google/genai";
 import env from "../config/env.js";
 
-const ai = new GoogleGenAI({ apiKey: env.geminiApiKey });
+const ai = new GoogleGenAI({ apiKey: env.geminiApiKey, apiVersion: "v1beta" });
+const gemini_base_url = env.geminiBaseUrl;
 
 export const createAnalysis = async (req, res) => {
   try {
@@ -185,18 +186,15 @@ RETURN JSON FORMAT
       console.warn(
         `OpenAI failed (${openaiError.message}). Switching to Gemini...`,
       );
-      aiProvider = "Gemini";
-      modelUsed = "gemini-1.5-flash";
-
-      const response = await ai.models.generateContent({
+      aiProvider = "gemini";
+      modelUsed = "gemini-2.5-flash-lite";
+      const chatCompletion = await gemini.chat.completions.create({
         model: modelUsed,
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-          temperature: 0.2,
-        },
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.2,
+        response_format: { type: "json_object" },
       });
-      analysisResult = JSON.parse(response.text);
+      analysisResult = JSON.parse(chatCompletion.choices[0].message.content);
     }
 
     const responseTimeMs = Date.now() - startTime;

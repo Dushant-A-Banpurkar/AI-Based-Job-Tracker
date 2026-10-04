@@ -10,7 +10,7 @@ const router=express.Router();
 // router.post('/upload-multiple',upload.array('pdf',5),uploadMultipleFile);
 // router.get('/resume-data/user/:userId',getResumeById);
 
-router.post('/upload-single',rateLimiter,uploadMemory.single("pdf"),uploadsingleFile);
+router.post('/upload-single',uploadMemory.single("pdf"),uploadsingleFile);
 router.post('/upload-multiple',uploadMultipleFile);
 router.get('/resume-data/user/:userId',getResumeById);
 

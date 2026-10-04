@@ -4,7 +4,7 @@ import { analysisRateLimiter } from "../middlewares/rateLimitter.js";
 
 const router=express.Router();
 
-router.post('/analyzing/:userId',analysisRateLimiter,createAnalysis);
+router.post('/analyzing/:userId',createAnalysis);
 router.get('/getanalysis/:id',getAnalysis);
 router.post('/analysis-history',fetchAnalysisHistory)
 export default router;

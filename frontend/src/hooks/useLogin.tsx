@@ -43,13 +43,13 @@ export const useSignIn=()=>{
             setErrors({general:errors.message})
             toast.error("Failed to login")
         },
-        onSuccess:async(responseData:any)=>{
+        onSuccess:(responseData:any)=>{
             // localStorage.setItem('token',data.token),
             toast.success("Login Successfully");
 
             queryClient.setQueryData(["authUser"],responseData.data);
 
-            await queryClient.invalidateQueries({queryKey:["authUser"]})
+            queryClient.invalidateQueries({queryKey:["authUser"]})
             navigate('/dashboard')
         }
     }as UseMutationOptions<string, Error, LoginForm>);

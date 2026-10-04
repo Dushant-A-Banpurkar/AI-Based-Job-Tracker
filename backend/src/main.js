@@ -30,7 +30,9 @@ app.use(express.urlencoded({ extended: true }));
 //   console.log("GLOBAL LOGGER - raw body (may be undefined if not parsed):", req.body);
 //   next();
 // });
-
+app.get("/", (req, res) => {
+  res.status(200).send("Server is awake");
+});
 app.use("/api/pdf", pdfRoute);
 app.use("/api/analysis", analysis);
 app.use("/api/auth", auth);

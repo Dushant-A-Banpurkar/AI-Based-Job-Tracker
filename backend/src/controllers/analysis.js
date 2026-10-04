@@ -5,6 +5,11 @@ import Analysis from "../models/analysisModel.js";
 dotenv.config();
 import UserData from "../models/userModel.js";
 
+import { GoogleGenAI } from "@google/genai";
+import env from "../config/env.js";
+
+const ai = new GoogleGenAI({ apiKey: env.geminiApiKey });
+
 export const createAnalysis = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -163,17 +168,38 @@ RETURN JSON FORMAT
   ]
 }
 `;
+    let analysisResult;
+    let aiProvider = "OpenAI";
+    let modelUsed = "gpt-4o-mini";
+    let startTime = Date.now();
 
-    const chatCompletion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.2,
-      response_format: { type: "json_object" },
+    try {
+      const chatCompletion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.2,
+        response_format: { type: "json_object" },
+      });
+      analysisResult = JSON.parse(chatCompletion.choices[0].message.content);
+    } catch (openaiError) {
+      console.warn(
+        `OpenAI failed (${openaiError.message}). Switching to Gemini...`,
+      );
+      aiProvider = "Gemini";
+      modelUsed = "gemini-1.5-flash";
 
-    });
-    const analysisResult = JSON.parse(
-      chatCompletion.choices[0].message.content,
-    );
+      const response = await ai.models.generateContent({
+        model: modelUsed,
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          temperature: 0.2,
+        },
+      });
+      analysisResult = JSON.parse(response.text);
+    }
+
+    const responseTimeMs = Date.now() - startTime;
     const savedAnalysis = await Analysis.findOneAndUpdate(
       {
         userId,
@@ -225,7 +251,7 @@ RETURN JSON FORMAT
 
           suggestions: analysisResult.suggestions || [],
 
-          aiProvider: analysisResult.aiProvider,
+          aiProvider: aiProvider,
 
           modelUsed: analysisResult.modelUsed,
 
@@ -238,9 +264,9 @@ RETURN JSON FORMAT
         runValidators: true,
       },
     );
-    if(!savedAnalysis){
-      throw Error("Problem in savedAnalysis")
-      console.log(message.error)
+    if (!savedAnalysis) {
+      throw Error("Problem in savedAnalysis");
+      console.log(message.error);
     }
     console.log("analysis Result: ", savedAnalysis);
     res.status(200).json({ Message: "Analysis complete", data: savedAnalysis });
@@ -256,8 +282,8 @@ export const getAnalysis = async (req, res) => {
   try {
     const { id } = req.params;
     const analysisResult = await Analysis.findById(id);
-    if(!analysisResult){
-      return res.status(404).json({error:"Analysis History Not Found"})
+    if (!analysisResult) {
+      return res.status(404).json({ error: "Analysis History Not Found" });
     }
     return res
       .status(200)
@@ -268,24 +294,23 @@ export const getAnalysis = async (req, res) => {
   }
 };
 
-
-export const fetchAnalysisHistory=async (req,res) => {
+export const fetchAnalysisHistory = async (req, res) => {
   try {
-    const {userId}=req.body;
-    const id=await UserData.findById(userId);
-    if(!id){
+    const { userId } = req.body;
+    const id = await UserData.findById(userId);
+    if (!id) {
       console.log("UserId not Found");
-      return res.status(400).json({message:"User Not Found!!!"});
+      return res.status(400).json({ message: "User Not Found!!!" });
     }
 
-    const fetchHistory=(await Analysis.find({userId:userId}))
+    const fetchHistory = await Analysis.find({ userId: userId });
 
-    if(!fetchHistory || !fetchHistory.length ===0){
-      return res.status(404).json({message:"No History Data Found"})
+    if (!fetchHistory || !fetchHistory.length === 0) {
+      return res.status(404).json({ message: "No History Data Found" });
     }
-    res.status(200).json(fetchHistory)
+    res.status(200).json(fetchHistory);
   } catch (error) {
-    console.log("Error: ",error);
-    res.status(500).json({error:"Server Error:",details:error.message})
+    console.log("Error: ", error);
+    res.status(500).json({ error: "Server Error:", details: error.message });
   }
-}
+};

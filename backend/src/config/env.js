@@ -49,5 +49,5 @@ export default {
     user: EMAIL_USER,
     pass: EMAIL_PASS,
   },
-  render:REDIS_URL,
+  render:RENDER_URL,
 };

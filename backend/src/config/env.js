@@ -10,6 +10,7 @@ const {
   JWT_EXPIRE = "7d",
   REDIS_URL,
   OPENAI_API_KEY,
+  GEMINI_API_KEY,
   AWS_ACCESS_KEY,
   AWS_SECRET_KEY,
   AWS_REGION,
@@ -37,6 +38,7 @@ export default {
   redisUrl:REDIS_URL,
   node: NODE_ENV,
   openaiKey: OPENAI_API_KEY,
+  geminiApiKey:GEMINI_API_KEY,
   supabase:SUPABASE_JWT_SECRET,
   aws: { key: AWS_ACCESS_KEY, secret: AWS_SECRET_KEY, region:AWS_REGION,bucketname:AWS_S3_BUCKET},
   email: {

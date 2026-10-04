@@ -11,6 +11,7 @@ const {
   REDIS_URL,
   OPENAI_API_KEY,
   GEMINI_API_KEY,
+  GEMINI_BASE_URL,
   AWS_ACCESS_KEY,
   AWS_SECRET_KEY,
   AWS_REGION,
@@ -39,6 +40,7 @@ export default {
   node: NODE_ENV,
   openaiKey: OPENAI_API_KEY,
   geminiApiKey:GEMINI_API_KEY,
+  geminiBaseUrl:GEMINI_BASE_URL,
   supabase:SUPABASE_JWT_SECRET,
   aws: { key: AWS_ACCESS_KEY, secret: AWS_SECRET_KEY, region:AWS_REGION,bucketname:AWS_S3_BUCKET},
   email: {

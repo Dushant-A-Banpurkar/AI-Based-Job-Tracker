@@ -187,7 +187,7 @@ RETURN JSON FORMAT
         `OpenAI failed (${openaiError.message}). Switching to Gemini...`,
       );
       aiProvider = "gemini";
-      modelUsed = "gemini-2.5-flash-lite";
+      modelUsed = "gemini-2.0-flash";  //"gemini-2.5-flash-lite"
       const chatCompletion = await gemini.chat.completions.create({
         model: modelUsed,
         messages: [{ role: "user", content: prompt }],

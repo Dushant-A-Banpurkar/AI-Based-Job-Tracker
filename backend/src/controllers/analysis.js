@@ -187,7 +187,7 @@ RETURN JSON FORMAT
         `OpenAI failed (${openaiError.message}). Switching to Gemini...`,
       );
       aiProvider = "gemini";
-      modelUsed = "gemini-2.0-flash";  //"gemini-2.5-flash-lite"
+      modelUsed = "gemini-2.5-flash-lite";
       const chatCompletion = await gemini.chat.completions.create({
         model: modelUsed,
         messages: [{ role: "user", content: prompt }],
@@ -198,6 +198,17 @@ RETURN JSON FORMAT
     }
 
     const responseTimeMs = Date.now() - startTime;
+    const validChances = ["High", "Medium", "Low"];
+    let rawChance = String(analysisResult.shortlistChance || "").toLowerCase();
+    
+    let sanitizedShortlistChance = "Medium";
+    if (rawChance.includes("high") || rawChance.includes("strong") || rawChance.includes("excellent")) {
+      sanitizedShortlistChance = "High";
+    } else if (rawChance.includes("low") || rawChance.includes("weak") || rawChance.includes("poor")) {
+      sanitizedShortlistChance = "Low";
+    } else if (validChances.includes(analysisResult.shortlistChance)) {
+      sanitizedShortlistChance = analysisResult.shortlistChance;
+    }
     const savedAnalysis = await Analysis.findOneAndUpdate(
       {
         userId,
@@ -216,7 +227,7 @@ RETURN JSON FORMAT
           impactScore: analysisResult.impactScore,
           credibilityScore: analysisResult.credibilityScore,
 
-          shortlistChance: analysisResult.shortlistChance,
+          shortlistChance: sanitizedShortlistChance,
 
           strengths: analysisResult.strengths || [],
           weaknesses: analysisResult.weaknesses || [],
@@ -251,9 +262,9 @@ RETURN JSON FORMAT
 
           aiProvider: aiProvider,
 
-          modelUsed: analysisResult.modelUsed,
+          modelUsed: modelUsed,
 
-          responseTimeMs: analysisResult.responseTimeMs,
+          responseTimeMs: responseTimeMs,
         },
       },
       {

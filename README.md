@@ -57,9 +57,10 @@ JWT_EXPIRE=7d
 REDIS_URL=redis://127.0.0.1:6379
 OPENAI_API_KEY=replace-with-your-openai-api-key
 NODE_ENV=development
+ALLOWED_ORIGINS=http://localhost:4000,https://your-frontend-domain.vercel.app
 ```
 
-`MONGODB_URI`, `JWT_SECRET`, `REDIS_URL`, and `OPENAI_API_KEY` are required by the backend at startup. `PORT` defaults to `4000`, `JWT_EXPIRE` defaults to `7d`, and `NODE_ENV` defaults to `development`.
+`MONGODB_URI`, `JWT_SECRET`, `REDIS_URL`, and `OPENAI_API_KEY` are required by the backend at startup. `PORT` defaults to `4000`, `JWT_EXPIRE` defaults to `7d`, and `NODE_ENV` defaults to `development`. `ALLOWED_ORIGINS` is optional and accepts a comma-separated list of trusted frontend origins for CORS; include your deployed frontend domains when hosting the app externally.
 
 If you configure the optional S3 integration, also provide `AWS_ACCESS_KEY`, `AWS_SECRET_KEY`, `AWS_REGION`, and `AWS_S3_BUCKET`. These are not required for the current in-memory PDF extraction flow.
 

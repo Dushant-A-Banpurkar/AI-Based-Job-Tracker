@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 import cors from "cors";
 import pdfRoute from "./routes/pdf.js";
 import analysis from "./routes/analysis.js";
@@ -33,6 +34,17 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.status(200).send("Server is awake");
 });
+
+app.get("/ready", (_req, res) => {
+  const mongoReady = mongoose.connection.readyState === 1;
+  res.status(mongoReady ? 200 : 503).json({
+    status: mongoReady ? "ready" : "not_ready",
+    checks: {
+      mongodb: mongoReady ? "connected" : "disconnected",
+    },
+  });
+});
+
 app.use("/api/pdf", pdfRoute);
 app.use("/api/analysis", analysis);
 app.use("/api/auth", auth);

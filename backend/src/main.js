@@ -16,6 +16,7 @@ app.use(
       "http://localhost:4000",
       "https://ai-based-job-tracker.vercel.app",
       "https://ai-based-job-tracker-frontend.vercel.app",
+      "https://ai-based-interview-pi.vercel.app",
       "https://frontend-of-ai-based-job-tracker.vercel.app",
     ],
     credentials: true,

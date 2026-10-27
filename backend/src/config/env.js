@@ -24,7 +24,8 @@ const {
   JWT_ALGORITHM = "HS256",
   NODE_ENV = "development",
   RENDER_URL,
-  BACKUP_RENDER_URL
+  BACKUP_RENDER_URL,
+  ALLOWED_ORIGINS,
 } = process.env;
 
 assert(MONGODB_URI, "MONGODB_URI is required");
@@ -52,4 +53,5 @@ export default {
   },
   render:RENDER_URL,
   backupRender:BACKUP_RENDER_URL,
+  allowedOrigins: ALLOWED_ORIGINS,
 };

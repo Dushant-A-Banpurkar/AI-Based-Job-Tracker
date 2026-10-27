@@ -10,15 +10,34 @@ import connectMongoDB from "./config/database.js";
 import cookieParser from "cookie-parser";
 const app = express();
 
+const defaultAllowedOrigins = [
+  "http://localhost:4000",
+  "http://localhost:5173",
+  "https://ai-based-job-tracker.vercel.app",
+  "https://ai-based-job-tracker-frontend.vercel.app",
+  "https://ai-based-interview-pi.vercel.app",
+  "https://frontend-of-ai-based-job-tracker.vercel.app",
+];
+
+const allowedOrigins = env.allowedOrigins
+  ? env.allowedOrigins
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean)
+  : [];
+
+const corsOrigins = [...new Set([...defaultAllowedOrigins, ...allowedOrigins])];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:4000",
-      "https://ai-based-job-tracker.vercel.app",
-      "https://ai-based-job-tracker-frontend.vercel.app",
-      "https://ai-based-interview-pi.vercel.app",
-      "https://frontend-of-ai-based-job-tracker.vercel.app",
-    ],
+    origin: (origin, callback) => {
+      if (!origin || corsOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   }),
 );

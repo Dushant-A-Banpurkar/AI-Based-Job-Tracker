@@ -26,17 +26,24 @@ const allowedOrigins = env.allowedOrigins
       .filter(Boolean)
   : [];
 
-const corsOrigins = [...new Set([...defaultAllowedOrigins, ...allowedOrigins])];
+const corsOrigins = new Set([...defaultAllowedOrigins, ...allowedOrigins]);
+
+const isTrustedOrigin = (origin) => {
+  if (!origin) return true;
+
+  if (corsOrigins.has(origin)) return true;
+
+  return (
+    origin.includes(".vercel.app") ||
+    origin.includes(".onrender.com") ||
+    origin.includes("localhost")
+  );
+};
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || corsOrigins.includes(origin)) {
-        callback(null, true);
-        return;
-      }
-
-      callback(new Error("Not allowed by CORS"));
+      callback(null, isTrustedOrigin(origin));
     },
     credentials: true,
   }),

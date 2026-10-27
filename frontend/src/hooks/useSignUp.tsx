@@ -8,6 +8,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 interface signUpForm {
   firstname: string;
@@ -18,8 +19,7 @@ interface signUpForm {
 }
 
 const signup = async (data: signUpForm) => {
-  const url=import.meta.env.VITE_BACKEND_API;
-  const res = await fetch(`${url}/api/auth/signup`, {
+  const res = await fetchInterviewBackend("/api/auth/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

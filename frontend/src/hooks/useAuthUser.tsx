@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 const fetchAuthUser = async () => {
-  const url=import.meta.env.VITE_BACKEND_API;
-  const response = await fetch(`${url}/api/auth/me`, {
+  const response = await fetchInterviewBackend("/api/auth/me", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

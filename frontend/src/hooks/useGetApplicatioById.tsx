@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 const fetchApplicationById = async (id: string) => {
-  const url = import.meta.env.VITE_BACKEND_API;
-  const res = await fetch(`${url}/api/application/id/${id}`, {
+  const res = await fetchInterviewBackend(`/api/application/id/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

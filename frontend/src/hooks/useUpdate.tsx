@@ -10,6 +10,7 @@ import {
   type UseMutationResult,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 interface updateApplication {
   _id?: string;
@@ -24,8 +25,7 @@ interface updateApplication {
 }
 
 const update = async (data: updateApplication) => {
-  const url = import.meta.env.VITE_BACKEND_API;
-  const res = await fetch(`${url}/api/application/update`, {
+  const res = await fetchInterviewBackend("/api/application/update", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

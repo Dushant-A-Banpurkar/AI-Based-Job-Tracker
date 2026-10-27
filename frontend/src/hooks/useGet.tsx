@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuthUser } from "./useAuthUser";
 import type { JobApp } from "@/types/job";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 interface getApplications {
   userId: string;
 }
 
 const getApplications = async (data: getApplications) => {
-  const url=import.meta.env.VITE_BACKEND_API;
-  const res = await fetch(`${url}/api/application/get`, {
+  const res = await fetchInterviewBackend("/api/application/get", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

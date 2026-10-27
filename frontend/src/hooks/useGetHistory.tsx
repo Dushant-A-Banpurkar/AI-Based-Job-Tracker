@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuthUser } from "./useAuthUser";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 interface fetchHistory {
   userId: string;
 }
 
 const fetchHistory = async (data: fetchHistory) => {
-  const url = import.meta.env.VITE_BACKEND_API;
-  const res = await fetch(`${url}/api/analysis/analysis-history`, {
+  const res = await fetchInterviewBackend("/api/analysis/analysis-history", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

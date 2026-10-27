@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 interface addApplication {
   userId: string;
@@ -42,8 +43,7 @@ const add = async (data: addApplication) => {
   // );
   // formData.append("notes", data.notes);
 
-  const url=import.meta.env.VITE_BACKEND_API;
-  const res = await fetch(`${url}/api/application/add`, {
+  const res = await fetchInterviewBackend("/api/application/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

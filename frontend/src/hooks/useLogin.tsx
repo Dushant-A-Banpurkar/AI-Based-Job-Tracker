@@ -3,6 +3,7 @@ import { useMutation, useQueryClient, type UseMutationOptions, type UseMutationR
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 interface LoginForm {
   email: string;
@@ -10,8 +11,7 @@ interface LoginForm {
 }
 
 const sigin = async (data: LoginForm) => {
-    const url=import.meta.env.VITE_BACKEND_API;
-  const res = await fetch(`${url}/api/auth/signin`, {
+  const res = await fetchInterviewBackend("/api/auth/signin", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

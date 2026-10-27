@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuthUser } from "./useAuthUser";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 interface analyzeForm {
   pdf: File;
@@ -25,8 +26,7 @@ const analyze = async (data: analyzeForm) => {
   formData.append("companyName", data.companyName);
   formData.append("role", data.role);
 
-  const url=import.meta.env.VITE_BACKEND_API;
-  const res = await fetch(`${url}/api/pdf/upload-single`, {
+  const res = await fetchInterviewBackend("/api/pdf/upload-single", {
     method: "POST",
     credentials: "include",
     body: formData,

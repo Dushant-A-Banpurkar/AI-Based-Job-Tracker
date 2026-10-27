@@ -1,10 +1,10 @@
 import { useMutation} from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { fetchInterviewBackend } from "../lib/backendApi";
 
 const logoutApi = async () => {
-  const url=import.meta.env.VITE_BACKEND_API;
-  const response = await fetch(`${url}/api/auth/logout`, {
+  const response = await fetchInterviewBackend("/api/auth/logout", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

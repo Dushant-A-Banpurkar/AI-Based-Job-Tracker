@@ -23,7 +23,8 @@ const {
   SUPABASE_JWT_SECRET,
   JWT_ALGORITHM = "HS256",
   NODE_ENV = "development",
-  RENDER_URL
+  RENDER_URL,
+  BACKUP_RENDER_URL
 } = process.env;
 
 assert(MONGODB_URI, "MONGODB_URI is required");
@@ -50,4 +51,5 @@ export default {
     pass: EMAIL_PASS,
   },
   render:RENDER_URL,
+  backupRender:BACKUP_RENDER_URL,
 };

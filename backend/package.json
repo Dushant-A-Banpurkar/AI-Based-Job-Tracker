@@ -15,7 +15,7 @@
     "@tensorflow-models/qna": "^1.0.2",
     "@tensorflow/tfjs": "^4.22.0",
     "assert": "^2.1.0",
-    "aws-sdk": "^2.1692.0",
+    "aws-sdk": "^2.1693.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
@@ -35,7 +35,7 @@
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "multer-s3": "^3.0.1",
-    "nodemailer": "^7.0.11",
+    "nodemailer": "^10.2.1",
     "openai": "^6.9.1",
     "pdf-parse": "^2.4.5",
     "pdfjs-dist": "^5.4.449",
@@ -47,5 +47,13 @@
     "eslint": "^9.39.1",
     "jest": "^30.2.0",
     "nodemon": "^3.1.11"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true,
+    "@google/genai@2.27.0": true,
+    "aws-sdk@2.1692.0": true,
+    "core-js@3.29.1": true,
+    "protobufjs@7.6.6": true,
+    "unrs-resolver@1.11.1": true
   }
 }

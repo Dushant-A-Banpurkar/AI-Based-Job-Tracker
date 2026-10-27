@@ -55,11 +55,14 @@ app.listen(env.port, () => {
   connectMongoDB();
 
   const renderUrl = env.render;
+  const backupUrl=env.backupRender;
   setInterval(
     async () => {
       try {
         const response = await fetch(renderUrl);
-        console.log(`Keep-alive ping successful: ${response.status}`);
+        const response2=await fetch(backupUrl);
+        console.log(`Keep-alive ping successful of Main Server: ${response.status}`);
+        console.log(`Keep-alive ping successful of Main Server: ${response2.status}`);
       } catch (error) {
         console.error(`Keep-alive ping failed:`, error.message);
       }

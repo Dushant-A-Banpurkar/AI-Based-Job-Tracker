@@ -1,10 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-  type UseMutationResult,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -18,20 +12,33 @@ interface signUpForm {
   password: string;
 }
 
-const signup = async (data: signUpForm) => {
+interface AuthUser {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  username: string;
+}
+
+interface SignUpResponse {
+  message: string;
+  data: AuthUser;
+}
+
+const signup = async (data: signUpForm): Promise<SignUpResponse> => {
   const res = await fetchInterviewBackend("/api/auth/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    credentials:"include",
+    credentials: "include",
     body: JSON.stringify(data),
   });
   if (!res.ok) {
     const errorData = await res.json();
     throw new Error(errorData.error || "Failed to Create Account");
   }
-  return res.json();
+  return res.json() as Promise<SignUpResponse>;
 };
 
 export const useSignUp = () => {
@@ -46,18 +53,18 @@ export const useSignUp = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const mutation: UseMutationResult<string, Error, signUpForm> = useMutation({
+  const mutation = useMutation<SignUpResponse, Error, signUpForm>({
     mutationFn: signup,
-    onError: (error: any) => {
+    onError: (error) => {
       setErrors({ general: error.message });
       toast.error("Failed To Create Account");
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+    onSuccess: (responseData) => {
+      queryClient.setQueryData(["authUser"], responseData.data);
       toast.success("Account Created Successfully");
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     },
-  } as UseMutationOptions<string, Error, signUpForm>);
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -67,13 +74,9 @@ export const useSignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    try {
-      // signUpSchema.parse(formData);
-      mutation.mutate(formData);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
+    // signUpSchema.parse(formData);
+    mutation.mutate(formData);
   };
-  
+
   return [formData, errors, handleInputChange, handleSubmit, mutation] as const;
 };

@@ -89,7 +89,7 @@ app.listen(env.port, () => {
         const response = await fetch(renderUrl);
         const response2=await fetch(backupUrl);
         console.log(`Keep-alive ping successful of Main Server: ${response.status}`);
-        console.log(`Keep-alive ping successful of Main Server: ${response2.status}`);
+        console.log(`Keep-alive ping successful of Backup Server: ${response2.status}`);
       } catch (error) {
         console.error(`Keep-alive ping failed:`, error.message);
       }
